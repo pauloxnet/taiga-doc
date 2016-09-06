@@ -63,7 +63,7 @@ $ cd taiga-scripts
 $ bash setup-devel.sh
 ----
 
-Upgrade from Ubuntu 16.04 taiga installation to Ubuntu 16.04
+Upgrade from Ubuntu 14.04 taiga installation to Ubuntu 16.04
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To upgrade from 14.04 to 16.04 you have to follow the official Ubuntu process:
