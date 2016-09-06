@@ -54,9 +54,9 @@ C compiller and development headers.
 
 [source,bash]
 ----
-sudo apt-get install -y build-essential binutils-doc autoconf flex bison libjpeg-dev
-sudo apt-get install -y libfreetype6-dev zlib1g-dev libzmq3-dev libgdbm-dev libncurses5-dev
-sudo apt-get install -y automake libtool libffi-dev curl git tmux gettext
+sudo apt-get install -y \
+build-essential binutils-doc autoconf flex bison libjpeg-dev libfreetype6-dev libxml2-dev libxslt1-dev \
+zlib1g-dev libzmq3-dev libgdbm-dev libncurses5-dev automake libtool libffi-dev curl git tmux gettext
 ----
 
 Setup a database
@@ -68,8 +68,7 @@ Install postgresql:
 
 [source,bash]
 ----
-sudo apt-get install -y postgresql-9.5 postgresql-contrib-9.5
-sudo apt-get install -y postgresql-doc-9.5 postgresql-server-dev-9.5
+sudo apt-get install -y postgresql-9.5 postgresql-contrib-9.5 postgresql-doc-9.5 postgresql-server-dev-9.5
 ----
 
 And setup the initial user and database:
@@ -89,7 +88,6 @@ libraries. As a first step, start installing python and virtualenvwrapper:
 [source,bash]
 ----
 sudo apt-get install -y python3 python3-pip python-dev python3-dev python-pip virtualenvwrapper
-sudo apt-get install libxml2-dev libxslt-dev
 ----
 
 [NOTE]
@@ -101,7 +99,7 @@ variables and functions.
 
 The next step is to download the code from github and install their dependencies:
 
-.Download the code
+- Download the code
 [source,bash]
 ----
 cd ~
@@ -110,19 +108,19 @@ cd taiga-back
 git checkout stable
 ----
 
-.Create new virtualenv named **taiga**
+- Create new virtualenv named **taiga**
 [source,bash]
 ----
 mkvirtualenv -p /usr/bin/python3.5 taiga
 ----
 
-.Install dependencies
+- Install dependencies
 [source, bash]
 ----
 pip install -r requirements.txt
 ----
 
-.Populate the database with initial basic data
+- Populate the database with initial basic data
 [source,bash]
 ----
 python manage.py migrate --noinput
@@ -146,7 +144,7 @@ python manage.py sample_data
 And as final step for setup **taiga-back**, you should create the intial configuration
 for proper static/media files resolution and optionally, email sending support:
 
-.Put this on ~/taiga-back/settings/local.py
+- Put this on `~/taiga-back/settings/local.py`
 [source,python]
 ----
 from .common import *
@@ -218,7 +216,7 @@ Install `rabbitmq-server` and `redis-server`:
 sudo apt-get install -y rabbitmq-server redis-server
 ----
 
-To run celery with taiga you have to include in your local.py the lines:
+To run celery with taiga you have to include in your `local.py` the lines:
 
 [source,python]
 ----
@@ -234,7 +232,7 @@ http://docs.celeryproject.org/en/latest/index.html
 
 Once you have configured celery on Taiga, you have to add celery to circus configuration. See link:#circus-and-gunicorn[Circus and gunicorn] section.
 
-.Taiga celery configuration block for circus on /etc/circus/conf.d/taiga-celery.ini
+- Taiga celery configuration block for circus on `/etc/circus/conf.d/taiga-celery.ini`
 [source,ini]
 ----
 [watcher:taiga-celery]
@@ -280,7 +278,7 @@ Frontend installation
 
 Download the code from github:
 
-.Download the code
+- Download the code
 [source,bash]
 ----
 cd ~
@@ -293,7 +291,7 @@ And now, you can configure it copying the
 `~/taiga-front-dist/dist/conf.example.json` to `~/taiga-front-dist/dist/conf.json`
 and editing it.
 
-.Copy and edit initial configuration on ~/taiga-front-dist/dist/conf.json
+- Copy and edit initial configuration on `~/taiga-front-dist/dist/conf.json`
 [source,json]
 ----
 {
@@ -322,13 +320,13 @@ Taiga-events is the Taiga websocket server, it allows taiga-front showing realti
 
 Taiga events needs rabbitmq (the message broker) to be installed
 
-.Installing rabbitmq
+- Installing rabbitmq
 [source,bash]
 ----
-sudo  apt-get install rabbitmq-server
+sudo apt-get install rabbitmq-server
 ----
 
-.Creating a taiga user and virtualhost for rabbitmq
+- Creating a taiga user and virtualhost for rabbitmq
 [source,bash]
 ----
 sudo rabbitmqctl add_user taiga PASSWORD
@@ -336,7 +334,7 @@ sudo rabbitmqctl add_vhost taiga
 sudo rabbitmqctl set_permissions -p taiga taiga ".*" ".*" ".*"
 ----
 
-.Update your taiga-back settings to include in your local.py the lines:
+- Update your taiga-back settings to include in your `local.py` the lines:
 [source,python]
 ----
 EVENTS_PUSH_BACKEND = "taiga.events.backends.rabbitmq.EventsPushBackend"
@@ -345,7 +343,7 @@ EVENTS_PUSH_BACKEND_OPTIONS = {"url": "amqp://taiga:PASSWORD@localhost:5672/taig
 
 The next step is downloading the code from github and installing their dependencies:
 
-.Download the code
+- Download the code
 [source,bash]
 ----
 cd ~
@@ -353,7 +351,7 @@ git clone https://github.com/taigaio/taiga-events.git taiga-events
 cd taiga-events
 ----
 
-.Install all the javascript dependencies needed
+- Install all the javascript dependencies needed
 [source,bash]
 ----
 sudo apt-get install -y nodejs nodejs-legacy npm
@@ -361,13 +359,13 @@ npm install
 sudo npm install -g coffee-script
 ----
 
-.Copy and edit the config.json file you should update your rabbitmq uri and the secret key.
+- Copy and edit the `config.json` file you should update your rabbitmq uri and the secret key.
 [source,bash]
 ----
 cp config.example.json config.json
 ----
 
-.Your config.json should be like:
+- Your `config.json` should be like:
 [source,json]
 ----
 {
@@ -381,7 +379,7 @@ cp config.example.json config.json
 
 Now you have to add taiga-events to circus configuration. See link:#circus-and-gunicorn[Circus and gunicorn] section.
 
-.Taiga taiga-events configuration block for circus on /etc/circus/conf.d/taiga-events.ini
+- Taiga taiga-events configuration block for circus on `/etc/circus/conf.d/taiga-events.ini`
 [source,ini]
 ----
 [watcher:taiga-events]
@@ -414,7 +412,7 @@ circusctl start taiga-events
 
 Nginx need extra configuration too for taiga-events
 
-.Add specific configuration for **taiga-events** on /etc/nginx/sites-available/taiga.
+- Add specific configuration for **taiga-events** on `/etc/nginx/sites-available/taiga`.
 [source,nginx]
 ----
 server {
@@ -456,13 +454,13 @@ Circus is a process manager written by **Mozilla** and you will use it to execut
 Circus not only serves to execute processes, it also has utils for monitoring them, collecting logs,
 restarting processes if something goes wrong, and starting processes on system boot.
 
-.Install circus
+- Install circus
 [source,bash]
 ----
 sudo apt-get install circus
 ----
 
-.Initial taiga configuration for circus on /etc/circus/conf.d/taiga.ini
+- Initial taiga configuration for circus on `/etc/circus/conf.d/taiga.ini`
 [source,ini]
 ----
 [watcher:taiga]
@@ -496,7 +494,7 @@ PYTHONPATH=/home/taiga/.virtualenvs/taiga/lib/python3.4/site-packages
 ====
 
 Circus stats can generate a high cpu usage without any load you can set statsd
-in /etc/circus/circusd.conf to false if you don't need them.
+in `/etc/circus/circusd.conf` to false if you don't need them.
 
 Taiga stores logs on the user home, making them available and immediately accessible when
 you enter a machine. To make everything work, make sure you have the logs directory
@@ -527,7 +525,7 @@ sudo apt-get install -y nginx
 
 And now let us start configuring it:
 
-.Add specific configuration for **taiga-front-dist** and **taiga-back** on /etc/nginx/sites-available/taiga.
+- Add specific configuration for **taiga-front-dist** and **taiga-back** on `/etc/nginx/sites-available/taiga`.
 [source,nginx]
 ----
 server {
@@ -581,14 +579,14 @@ server {
 }
 ----
 
-.Disable the default nginx site (virtualhost)
+- Disable the default nginx site (virtualhost)
 [source,nginx]
 ----
 sudo rm /etc/nginx/sites-enabled/default
 ----
 
 
-.Enable the recently created Taiga site (virtualhost)
+- Enable the recently created Taiga site (virtualhost)
 [source,nginx]
 ----
 sudo ln -s /etc/nginx/sites-available/taiga /etc/nginx/sites-enabled/taiga
@@ -613,7 +611,7 @@ cd /etc/ssl
 sudo openssl dhparam -out dhparam.pem 4096
 ----
 
-.New configuration in /etc/nginx/sites-available/taiga
+- New configuration in `/etc/nginx/sites-available/taiga`
 [source,nginx]
 ----
 server {
@@ -690,7 +688,7 @@ server {
 Before activating the HTTPS site, the configuration for the front-end and back-end have to be updated;
 change the scheme from `http` to `https`.
 
-.Update ~/taiga-back/settings/local.py
+- Update `~/taiga-back/settings/local.py`
 [source,python]
 ----
 from .common import *
@@ -725,13 +723,13 @@ SERVER_EMAIL = DEFAULT_FROM_EMAIL
 #GITHUB_API_CLIENT_SECRET = "yourgithubclientsecret"
 ----
 
-.Restart circus after updating the configuration
+- Restart circus after updating the configuration
 [source,bash]
 ----
 sudo service circusd restart
 ----
 
-.Update ~/taiga-front-dist/dist/conf.json
+- Update `~/taiga-front-dist/dist/conf.json`
 [source,json]
 ----
 {
@@ -748,7 +746,7 @@ sudo service circusd restart
 
 And nginx:
 
-.Reload the nginx configuration
+- Reload the nginx configuration
 [source,bash]
 ----
 sudo service nginx reload
