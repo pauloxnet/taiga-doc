@@ -18,8 +18,6 @@ git pull
 
 .Backend application
 
-WARNING: As user "taiga" or whatever user you use, do not run this code as "root" to avoid errors.
-
 [source,bash]
 ----
 cd ~/taiga-back
@@ -29,7 +27,9 @@ git pull
 pip install --upgrade -r requirements.txt
 ----
 
-WARNING: If you have some pcontrib plugin installed you should to upgrade then before the next step.
+WARNING: As user "taiga" or whatever user you use, do not run this code as "root" to avoid errors.
+
+WARNING: If you have some contrib plugin installed you should to upgrade then before the next step.
 
 [source,bash]
 ----
